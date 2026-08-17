@@ -7,3 +7,8 @@
     @apply bg-background text-primary antialiased;
   }
 }
+
+/* Yjs Monaco Remote Cursor Gliding */
+.yRemoteSelectionHead {
+  transition: left 0.1s linear, top 0.1s linear;
+}

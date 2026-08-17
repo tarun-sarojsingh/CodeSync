@@ -1,6 +1,7 @@
 import { Code2, Share2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { UserInfo } from '../utils/user';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface TopNavProps {
   roomId: string;
@@ -39,25 +40,33 @@ export default function TopNav({ roomId, language, setLanguage, onShareClick, ac
 
       <div className="flex items-center space-x-4">
         <div className="flex -space-x-2">
-          {activeUsers.map((avatar, i) => (
-            <div 
-              key={i}
-              className="w-8 h-8 rounded-full border-2 border-surface flex items-center justify-center text-xs font-bold transition-transform hover:scale-110 cursor-help"
-              style={{ backgroundColor: avatar.color, color: '#0F1115' }}
-              title={avatar.name}
-            >
-              {avatar.name.charAt(avatar.name.indexOf(' ') + 1)}
-            </div>
-          ))}
+          <AnimatePresence>
+            {activeUsers.map((avatar, i) => (
+              <motion.div 
+                key={avatar.name + avatar.color + i}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="w-8 h-8 rounded-full border-2 border-surface flex items-center justify-center text-xs font-bold cursor-help"
+                style={{ backgroundColor: avatar.color, color: '#0F1115' }}
+                title={avatar.name}
+              >
+                {avatar.name.charAt(avatar.name.indexOf(' ') + 1)}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
         
-        <button 
+        <motion.button 
+          whileHover={{ y: -1, backgroundColor: 'rgba(137, 87, 229, 0.9)' }}
+          whileTap={{ scale: 0.95 }}
           onClick={onShareClick}
-          className="flex items-center px-4 py-1.5 bg-brand text-white text-sm font-medium rounded hover:bg-opacity-90 transition-all hover:-translate-y-px shadow-sm"
+          className="flex items-center px-4 py-1.5 bg-brand text-white text-sm font-medium rounded shadow-sm"
         >
           <Share2 size={16} className="mr-2" />
           Share
-        </button>
+        </motion.button>
       </div>
     </header>
   );
