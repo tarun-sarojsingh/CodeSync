@@ -1,6 +1,6 @@
 import { Code2, Share2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { UserInfo } from '../utils/user';
+import type { UserInfo } from '../utils/user';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface TopNavProps {

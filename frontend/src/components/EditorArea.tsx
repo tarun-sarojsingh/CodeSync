@@ -1,4 +1,5 @@
-import Editor, { useMonaco, OnMount } from '@monaco-editor/react';
+import Editor, { useMonaco } from '@monaco-editor/react';
+import type { OnMount } from '@monaco-editor/react';
 import { useEffect, useRef } from 'react';
 import * as Y from 'yjs';
 import { Awareness } from 'y-protocols/awareness';
@@ -20,7 +21,7 @@ export default function EditorArea({ language, yDoc, awareness }: EditorAreaProp
         base: 'vs-dark',
         inherit: true,
         rules: [
-          { background: '0F1115' }
+          { token: '', background: '0F1115' }
         ],
         colors: {
           'editor.background': '#0F1115',
@@ -33,7 +34,7 @@ export default function EditorArea({ language, yDoc, awareness }: EditorAreaProp
     }
   }, [monaco]);
 
-  const handleEditorMount: OnMount = (editor, monaco) => {
+  const handleEditorMount: OnMount = (editor) => {
     const type = yDoc.getText('monaco');
     bindingRef.current = new MonacoBinding(
       type,

@@ -7,7 +7,8 @@ import * as Y from 'yjs';
 import { Awareness } from 'y-protocols/awareness';
 import { WebsocketProvider } from 'y-websocket';
 import { IndexeddbPersistence } from 'y-indexeddb';
-import { generateRandomUser, UserInfo } from '../utils/user';
+import { generateRandomUser } from '../utils/user';
+import type { UserInfo } from '../utils/user';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function RoomPage() {
@@ -19,9 +20,9 @@ export default function RoomPage() {
   const [isCopied, setIsCopied] = useState(false);
   
   // Ref for Yjs doc and awareness to persist across re-renders
-  const yDocRef = useRef<Y.Doc>();
-  const awarenessRef = useRef<Awareness>();
-  const providerRef = useRef<WebsocketProvider>();
+  const yDocRef = useRef<Y.Doc | null>(null);
+  const awarenessRef = useRef<Awareness | null>(null);
+  const providerRef = useRef<WebsocketProvider | null>(null);
 
   if (!yDocRef.current) {
     yDocRef.current = new Y.Doc();

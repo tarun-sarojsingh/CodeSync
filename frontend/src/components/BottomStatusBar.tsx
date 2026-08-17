@@ -1,4 +1,4 @@
-import { Wifi, WifiOff, Loader2 } from 'lucide-react';
+
 
 interface BottomStatusBarProps {
   status: 'connected' | 'reconnecting' | 'offline';
