@@ -1,21 +1,17 @@
 import { Code2, Share2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { UserInfo } from '../utils/user';
 
 interface TopNavProps {
   roomId: string;
   language: string;
   setLanguage: (lang: string) => void;
   onShareClick: () => void;
+  activeUsers: UserInfo[];
 }
 
-export default function TopNav({ roomId, language, setLanguage, onShareClick }: TopNavProps) {
+export default function TopNav({ roomId, language, setLanguage, onShareClick, activeUsers }: TopNavProps) {
   const languages = ['javascript', 'typescript', 'python', 'java', 'cpp', 'html', 'css'];
-
-  // Dummy avatars for Phase 2 MVP
-  const avatars = [
-    { id: '1', name: 'Anonymous Badger', color: '#FF7849' },
-    { id: '2', name: 'Anonymous Fox', color: '#3FB950' },
-  ];
 
   return (
     <header className="h-[60px] bg-surface border-b border-border flex items-center justify-between px-4 shrink-0">
@@ -43,14 +39,14 @@ export default function TopNav({ roomId, language, setLanguage, onShareClick }: 
 
       <div className="flex items-center space-x-4">
         <div className="flex -space-x-2">
-          {avatars.map((avatar) => (
+          {activeUsers.map((avatar, i) => (
             <div 
-              key={avatar.id}
+              key={i}
               className="w-8 h-8 rounded-full border-2 border-surface flex items-center justify-center text-xs font-bold transition-transform hover:scale-110 cursor-help"
               style={{ backgroundColor: avatar.color, color: '#0F1115' }}
               title={avatar.name}
             >
-              {avatar.name.charAt(0)}
+              {avatar.name.charAt(avatar.name.indexOf(' ') + 1)}
             </div>
           ))}
         </div>

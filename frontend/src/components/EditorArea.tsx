@@ -1,12 +1,18 @@
-import Editor, { useMonaco } from '@monaco-editor/react';
-import { useEffect } from 'react';
+import Editor, { useMonaco, OnMount } from '@monaco-editor/react';
+import { useEffect, useRef } from 'react';
+import * as Y from 'yjs';
+import { Awareness } from 'y-protocols/awareness';
+import { MonacoBinding } from 'y-monaco';
 
 interface EditorAreaProps {
   language: string;
+  yDoc: Y.Doc;
+  awareness: Awareness;
 }
 
-export default function EditorArea({ language }: EditorAreaProps) {
+export default function EditorArea({ language, yDoc, awareness }: EditorAreaProps) {
   const monaco = useMonaco();
+  const bindingRef = useRef<MonacoBinding | null>(null);
 
   useEffect(() => {
     if (monaco) {
@@ -27,6 +33,24 @@ export default function EditorArea({ language }: EditorAreaProps) {
     }
   }, [monaco]);
 
+  const handleEditorMount: OnMount = (editor, monaco) => {
+    const type = yDoc.getText('monaco');
+    bindingRef.current = new MonacoBinding(
+      type,
+      editor.getModel()!,
+      new Set([editor]),
+      awareness
+    );
+  };
+
+  useEffect(() => {
+    return () => {
+      if (bindingRef.current) {
+        bindingRef.current.destroy();
+      }
+    };
+  }, []);
+
   return (
     <div className="flex-1 h-full w-full">
       <Editor
@@ -46,7 +70,7 @@ export default function EditorArea({ language }: EditorAreaProps) {
           formatOnPaste: true,
         }}
         loading={<div className="flex items-center justify-center h-full text-secondary">Loading Editor...</div>}
-        defaultValue="// Start coding here..."
+        onMount={handleEditorMount}
       />
     </div>
   );
