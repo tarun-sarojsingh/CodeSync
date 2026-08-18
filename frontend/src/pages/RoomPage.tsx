@@ -42,7 +42,7 @@ export default function RoomPage() {
     new IndexeddbPersistence(roomId!, yDocRef.current);
 
     // Initialize WebsocketProvider
-    const wsUrl = 'ws://localhost:8080/ws/room';
+    const wsUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:8080/ws/room';
     providerRef.current = new WebsocketProvider(wsUrl, roomId!, yDocRef.current, {
       params: { token: token || '' },
       awareness: awarenessRef.current,
@@ -54,7 +54,8 @@ export default function RoomPage() {
     if (!token) return;
 
     // Connect Chat WebSocket
-    const chatWs = new WebSocket(`ws://localhost:8080/ws/room/${roomId}?token=${token}`);
+    const baseWsUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:8080/ws/room';
+    const chatWs = new WebSocket(`${baseWsUrl}/${roomId}?token=${token}`);
     chatWsRef.current = chatWs;
 
     chatWs.onmessage = (event) => {
